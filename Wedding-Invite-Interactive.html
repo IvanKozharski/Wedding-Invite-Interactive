@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Свадьба Анны и Ивана — Наша История</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    /* ИЗМЕНЕНО: Новая, нежная палитра */
+    :root {
+      --text-dark: #5c5c5c; /* Мягкий графит */
+      --text-light: #8a8a8a;
+      --accent-color: #d1a3a3; /* Пыльная роза */
+      --bg-color: #fdfaf8; /* Теплый, почти белый */
+      --font-header: 'Cormorant Garamond', serif;
+      --font-body: 'Montserrat', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--text-dark);
+      background-color: var(--bg-color);
+      overflow-x: hidden;
+    }
+    
+    .scene {
+      height: 60vh;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 0em;
+      box-sizing: border-box;
+    }
+
+    .scene-main {
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 0em;
+      box-sizing: border-box;
+    }
+
+    /* ИЗМЕНЕНО: Новое главное фото */
+    #hero {
+      color: white;
+      text-align: center;
+      background-size: cover;
+      background-position: center;
+      background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(https://avatars.mds.yandex.net/i?id=6573b35f5f770064ab115d87df4bff6510cadd71-4884589-images-thumbs&n=13);
+    }
+    #hero h1 { font-family: var(--font-header); font-size: clamp(3em, 12vw, 8em); margin: 0; font-weight: 400; text-shadow: 2px 2px 10px rgba(0,0,0,0.5);}
+    #hero p { font-size: 1.5em; letter-spacing: 0.1em; }
+    .scroll-down { position: absolute; bottom: 30px; font-size: 0.9em; letter-spacing: 0.1em; animation: bounce 2s infinite; }
+    @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+
+    .content-wrapper { max-width: 1100px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 2em; }
+    /* ИЗМЕНЕНО: Более плавная анимация появления */
+    .text-block { opacity: 0; transform: translateY(40px); transition: opacity 1.2s ease-out, transform 1.2s ease-out; }
+    .scene.is-visible .text-block { opacity: 1; transform: translateY(0); }
+    .text-block h2 { font-family: var(--font-header); font-size: clamp(2.5em, 5vw, 4em); font-weight: 600; margin: 0 0 0.3em 0; color: var(--accent-color); }
+    .text-block p { line-height: 1.8; font-size: 1.1em; color: var(--text-light); }
+
+    /* ИЗМЕНЕНО: Живой акварельный фон */
+    .floral-bg {
+        position: absolute;
+        opacity: 0;
+        transition: opacity 2s ease-out 0.5s;
+        pointer-events: none;
+    }
+    .scene.is-visible .floral-bg { opacity: 0.5; }
+    .floral-bg svg {
+        width: 100%;
+        height: 100%;
+        color: var(--accent-color);
+        opacity: 0.15;
+        animation: gentle-rotate 40s linear infinite; /* Анимация вращения */
+    }
+    @keyframes gentle-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    #story .floral-bg { width: 50%; height: 90%; top: 5%; left: -15%; }
+    #timeline .floral-bg { width: 60%; height: 100%; bottom: 0; right: -20%; animation-direction: reverse; }
+    
+    .timeline-list { list-style: none; padding: 0; position: relative; }
+    .timeline-list::before { content: ''; position: absolute; left: 4px; top: 0; bottom: 0; width: 2px; background-color: rgba(209, 163, 163, 0.2); }
+    .timeline-list li { padding-left: 30px; margin-bottom: 2em; opacity: 0; transform: translateX(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+    .timeline-list li::before { content: ''; position: absolute; left: 0; top: 8px; width: 10px; height: 10px; background-color: var(--accent-color); border-radius: 50%; border: 2px solid var(--bg-color); box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+    .scene.is-visible .timeline-list li:nth-child(1) { transition-delay: 0.4s; }
+    .scene.is-visible .timeline-list li:nth-child(2) { transition-delay: 0.6s; }
+    .scene.is-visible .timeline-list li:nth-child(3) { transition-delay: 0.8s; }
+    .scene.is-visible .timeline-list li:nth-child(4) { transition-delay: 1s; }
+    .scene.is-visible .timeline-list li { opacity: 1; transform: translateX(0); }
+
+    #rsvp { flex-direction: column; text-align: center; }
+    #rsvp .text-block { max-width: 600px; text-align: center; }
+    form { margin-top: 2em; width: 100%; max-width: 500px; }
+    input { width: 100%; padding: 1em; border: 1px solid #eee; background: #fff; font-family: var(--font-body); font-size: 1em; margin-bottom: 1em; box-sizing: border-box;}
+    button { background-color: var(--accent-color); color: white; border: none; padding: 1em 2em; font-size: 1em; cursor: pointer; transition: all 0.3s; font-family: var(--font-body); letter-spacing: 0.1em; }
+    button:hover { background-color: var(--text-dark); }
+
+    @media (max-width: 768px) {
+        .content-wrapper { grid-template-columns: 1fr; text-align: center; }
+        .floral-bg { display: none; } /* Отключаем сложный фон на мобильных для читаемости */
+    }
+  </style>
+</head>
+<body>
+
+  <section id="hero" class="scene-main is-visible">
+    <div class="hero-content">
+      <p>Соединяем наши сердца</p>
+      <h1>Анна & Иван</h1>
+      <div id="countdown"></div>
+    </div>
+    <div class="scroll-down">↓</div>
+  </section>
+
+  <section id="story" class="scene">
+    <div class="floral-bg">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M63.5,-23.5C73.9,-2.8,68.2,23.5,50.7,42.5C33.2,61.5,4,73.2,-23.8,70.5C-51.9,67.8,-78.7,50.8,-85.5,27.9C-92.3,5,-79.1,-23.7,-60.7,-39.3C-42.3,-54.9,-18.7,-57.4,-0.9,-56.5C16.9,-55.6,33.9,-51.4,45.4,-42.3C56.9,-33.3,63.5,-19.5,63.5,-23.5" transform="translate(100 100) scale(0.8)"></path></svg>
+    </div>
+    <div class="content-wrapper">
+      <div class="text-block">
+        <h2>Наша История</h2>
+        <p>Мы приглашаем вас стать свидетелями самого важного дня в нашей жизни. Дня, когда две души, две истории и две мечты соединятся в одну. Этот праздник — для вас, наших самых близких и родных людей, без которых наша история была бы неполной. Присоединяйтесь к нам, чтобы разделить нашу радость!</p>
+      </div>
+      <div class="text-block"></div>
+    </div>
+  </section>
+
+  <section id="timeline" class="scene">
+    <div class="floral-bg">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M49.2,-64.4C63.8,-53.9,75.6,-38.7,79.5,-21.7C83.4,-4.7,79.4,14,70.6,30.3C61.8,46.6,48.2,60.5,31.9,69.5C15.6,78.5,-3.3,82.6,-22.3,77.8C-41.3,73,-60.4,59.3,-71,41.9C-81.6,24.5,-83.7,3.4,-78.9,-15.8C-74,-35,-62.1,-52.3,-46.8,-62.8C-31.4,-73.2,-15.7,-76.8,1.3,-78.1C18.3,-79.3,36.5,-78,49.2,-64.4Z" transform="translate(100 100) scale(0.9)"></path></svg>
+    </div>
+    <div class="content-wrapper">
+       <div class="text-block"></div>
+       <div class="text-block">
+        <h2>План Дня</h2>
+        <ul class="timeline-list">
+            <li><strong>16:30</strong> &mdash; Сбор гостей, легкие закуски и живая музыка 🥂</li>
+            <li><strong>17:00</strong> &mdash; Торжественная церемония. Самые важные слова 💍</li>
+            <li><strong>18:00</strong> &mdash; Праздничный ужин и теплые тосты 🍽️</li>
+            <li><strong>20:00</strong> &mdash; Время для танцев, сюрпризов и волшебства ✨</li>
+        </ul>
+       </div>
+    </div>
+  </section>
+  
+  <section id="details" class="scene">
+    <div class="content-wrapper">
+      <div class="text-block">
+        <h2>Дресс-код</h2>
+        <p>Форма одежды - Black Tie. Мы мечтаем видеть дам в вечерних платьях, а джентльменов в смокингах или строгих костюмах. Ваша элегантность станет лучшим украшением нашего вечера.</p>
+      </div>
+      <div class="text-block">
+        <h2>Подарки</h2>
+        <p>Ваше присутствие — наш главный подарок. Если же вы хотите порадовать нас чем-то еще, мы будем благодарны за вклад в нашу мечту о свадебном путешествии. На площадке будет специальная шкатулка для конвертов. 💌</p>
+      </div>
+    </div>
+  </section>
+  
+  <section id="map-scene" class="scene">
+      <div id="map" style="width:100%; height:100%;"></div>
+  </section>
+
+  <section id="rsvp" class="scene">
+    <div class="text-block">
+      <h2>Вы с нами?</h2>
+      <p>Пожалуйста, подтвердите ваше присутствие до 1 августа 2025 года, чтобы мы могли сделать этот день идеальным для каждого из вас.</p>
+      <form onsubmit="event.preventDefault(); sendRSVP();">
+        <input type="text" id="guestName" placeholder="Ваше имя и фамилия" required style="border-radius: 15px; margin-left: 10%;"/>
+        <button type="submit" required style="border-radius: 15px; margin-left: 15%;">Подтверждаю Присутствие</button>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    const scenes = document.querySelectorAll('.scene');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, { threshold: 0.4 });
+    scenes.forEach(scene => { observer.observe(scene); });
+
+    const countdownEl = document.getElementById('countdown');
+    const eventTime = new Date('2025-08-20T16:30:00+03:00').getTime(); 
+    function updateCountdown() {
+      const diff = eventTime - new Date().getTime();
+      if(diff < 0) { countdownEl.innerHTML = "Этот день настал!"; return; }
+      const d = Math.floor(diff / (1000*60*60*24));
+      const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+      const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+      countdownEl.innerHTML = `${d} дней, ${h} часов, ${m} минут`;
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    function sendRSVP() {
+      const name = document.getElementById('guestName').value;
+      alert(`Спасибо, ${name}! Мы с нетерпением ждём нашей встречи! ♥️`);
+    }
+    function initMap() {
+      const coords = [53.906756, 27.532546];
+      try {
+          const map = new ymaps.Map("map", {center: coords, zoom: 15, controls: ['zoomControl', 'fullscreenControl']});
+          const placemark = new ymaps.Placemark(coords, {
+            hintContent: 'Место проведения свадьбы',
+            balloonContent: 'Загородный клуб "Лесная сказка"',
+          }, {
+            iconLayout: 'default#image',
+            iconImageHref: 'https://img.icons8.com/ios-filled/50/5e768b/place-marker.png',
+            iconImageSize: [40, 40],
+            iconImageOffset: [-20, -38]
+          });
+          map.geoObjects.add(placemark);
+          map.behaviors.disable('scrollZoom');
+      } catch (e) {
+        console.error("Ошибка при инициализации Яндекс.Карт:", e);
+        document.getElementById('map').innerHTML = 'Не удалось загрузить карту.';
+      }
+    }
+    (function() {
+      var s = document.createElement('script');
+      s.src = "https://api-maps.yandex.ru/2.1/?lang=ru_RU";
+      s.onload = () => ymaps.ready(initMap);
+      document.head.appendChild(s);
+    })();
+  </script>
+</body>
+</html>
